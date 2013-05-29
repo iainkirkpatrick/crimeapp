@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Fear of Crime in Wellington</title>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" >
+    
+    <!--<script type="text/javascript" src="javascript/splashpage.js">
+    /***********************************************
+    * Splash Page script- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+    * This notice MUST stay intact for legal use
+    * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+    ***********************************************/
+    </script>-->
+    
+    <!-- OpenLayers core js -->
+    <script type="text/javascript"
+        src="/static/javascript/OpenLayers.js">
+    </script>
+    <!-- the fearOfCrime javascript-->
+    <script type="text/javascript"
+        src="/static/javascript/fearOfCrime.js">
+    </script>
+    <!-- OpenLayers core js -->
+    <script type="text/javascript"
+        src="/static/javascript/leafletjs_dist/leaflet.js">
+    </script>
+    
+    <!-- the css style sheets-->
+    <link rel="stylesheet" type="text/css" href="/static/fearOfCrime.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/static/javascript/theme/default/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/static/javascript/leafletjs_dist/leaflet.css" media="screen" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/static/javascript/leafletjs_dist/leaflet.ie.css" />
+    <![endif]-->
+
+</head>
+<body onload="init()">
+    <!--First a number of layers are defined and then the main website-->
+    <!--The layers visibility is controlled by cascading style sheets and java script-->
+    <noscript>
+        <!--the no java scipt layer which appears when java script is turned off in the users browser-->
+        <div id="noJS">
+            <center>
+                Sorry, your browser does not have JavaScript support enabled! <br />
+                Please enable javascript in your browser to use this website <br />
+                and then reload this website
+            </center>
+        </div>
+    </noscript>
+    <!--
+    <!--the cloud is a layer which covers the main website and then layers like the welcome or the questionaire layers appear on top of this --
+    <div id="cloud"></div>
+    <!--the welcome layer --
+    <div id="welcome">
+        <center>
+            Welcome to the Fear of Crime Website<br /><br />
+            This web site makes it possible for you to record the locations where you fear crime in Wellington. <br /> 
+            It is a 4 step shop<br />
+            1. step: Click the locations on the map where you think crime is high (click a least once). Click on proceed to proceed.<br />
+            2. step: Click the locations on the map where you feel unsafe walking at night (click a least once). Click on proceed to proceed.<br />
+            3. step: Click on the area where you live. If you don't live in Wellington use the provided drop down box. Click on proceed to proceed.<br />
+            4. step: Fill in the questionaire and click the submit button, when you're finished.<br />
+            Afterwards you'll be provided with an overview of all the data our users have provided at this stage.<br />
+            This will be very valuable information to our research and hopefully it can help to make Wellington a more safe place to live. <br /> 
+            Thank you very much for your participation.<br /><br />
+            <a href="#" onclick="closeLayers('cloud','welcome');">
+                <img src="images/proceed.png" alt='proceed image' />
+            </a>
+        </center>
+    </div>
+	-->
+    <!--the questionaire layer (not visible from the start - controlled by javascript) -->
+    <div id="questionaire">
+        <center>
+            <table width="95%" border="0" cellpadding="2" cellspacing="5" align="center">
+                <tr valign="top">
+    		        <td colspan="3"><strong>Questionnaire</strong></td>
+    	        </tr>
+  		        <tr valign="top">
+    		        <td width="47%" id="txtGender">Gender *</td>
+                    <td width="3%"></td>
+    		        <td width="50%">
+                    <select id="gender">
+    		        <option value="null">-Please select-</option> 
+    		        <option value="male">Male</option> 
+    		        <option value="female">Female</option>
+    		        </select>
+                    </td>
+  		        </tr>
+  		        <tr valign="top">
+                <td id="txtAge">Age group *</td>
+                <td></td>
+    	        <td>
+                <select id="age">
+    	        <option value="null">-Please select-</option> 
+    	        <option value="below16">Below 16</option> 
+    	        <option value="16_30">16 - 30</option> 
+    	        <option value="31_50">31 - 50</option> 
+    	        <option value="51_68">51 - 68</option> 
+    	        <option value="above68">Above 68</option> 
+		        </select>
+                </td>
+                </tr>
+                <tr valign="top">
+    	        <td id="txtOccup">Occupation *</td>
+                <td></td>
+    	        <td><select id="occup">
+    	        <option value="null">-Please select-</option> 
+    	        <option value="salaried">Salaried</option> 
+    	        <option value="self-employed">Self-employed</option> 
+    	        <option value="retired">Retired</option> 
+                <option value="student">Student</option> 
+                <option value="unemployed">Unemployed</option>
+                <option value="other">Other</option> 
+                </select></td>
+  		        </tr>
+                <tr valign="top">
+                <td id="txtIncome">Income *</td>
+                <td></td>
+                <td><select id="income">
+                <option value="null">-Please select-</option> 
+                <option value="below14000">Less than $14,000 p/a</option> 
+                <option value="14000_32000">$14,000 - $32,000 p/a</option> 
+                <option value="32001_62000">$32,000 -$62,000 p/a</option> 
+                <option value="above62000">More than $62,000 p/a</option> 
+                </select></td>
+              </tr>
+              <tr valign="top">
+                <td id="txtEdu">Education *</td>
+                <td></td>
+                <td><select id="edu">
+                <option value="null">-Please select-</option> 
+                <option value="high">High School</option> 
+                <option value="dip">Undergraduate Diploma</option> 
+                <option value="bachelor">Bachelor</option> 
+                <option value="post">Postgraduate</option>
+                <option value="other">Other</option> 
+                </select></td>
+              </tr>
+              <tr valign="top">
+                <td id="txtEthn">Ethnicity *</td>
+                <td></td>
+                <td><select id="ethn">
+                <option value="null">-Please select-</option> 
+                <option value="maori">Māori</option> 
+                <option value="pacific">Pacific</option> 
+                <option value="euro">NZ European</option> 
+                <option value="asian">Asian</option>
+                <option value="other">Other</option> 
+                </select></td>
+              </tr>
+              <tr valign="top">
+                <td id="txtOffended">Offended before? *</td>
+                <td></td>
+                <td><select id="offended">
+                <option value="null">-Please select-</option> 
+                <option value="none">None</option> 
+                <option value="light">Light</option> 
+                <option value="moderate">Moderate</option> 
+                <option value="serious">Serious</option>
+                </select></td>
+              </tr>
+              <tr valign="top">
+                <td id="txtWorry">Worried about crime in Wellington? *</td>
+                <td></td>
+                <td><select id="worry">
+                <option value="null">-Please select-</option> 
+                <option value="none">None</option> 
+                <option value="light">Light</option> 
+                <option value="moderate">Moderate</option> 
+                <option value="serious">Serious</option>
+                </select></td>
+              </tr>
+              <!--<tr valign="top">
+                <td id="txtSuburb">Where do you live? *</td>
+                <td></td>
+                <td><select id="suburb">
+                <option value="null">-Please select-</option> 
+                <option value="Addington">Addington</option> 
+                <option value="Aidanfield">Aidanfield</option> 
+                <option value="Aranui">Aranui</option> 
+                <option value="Avondale">Avondale</option>
+                <option value="Avonhead">Avonhead</option> 
+                <option value="Avonside">Avonside</option> 
+                <option value="Beckenham">Beckenham</option> 
+                <option value="Belfast">Belfast</option>
+                <option value="Bexley">Bexley</option> 
+                <option value="Bishopdale">Bishopdale</option> 
+                <option value="Bryndwr">Bryndwr</option> 
+                <option value="Burnside">Burnside</option>
+                <option value="Burwood">Burwood</option> 
+                <option value="Cashmere">Cashmere</option> 
+                <option value="Dallington">Dallington</option> 
+                <option value="Diamond_Harbour">Diamond Harbour</option>
+                <option value="Duvauchelle">Duvauchelle</option> 
+                <option value="Fendalton">Fendalton</option> 
+                <option value="Ferrymead">Ferrymead</option> 
+                <option value="Halswell">Halswell</option>
+                <option value="Harewood">Harewood</option> 
+                <option value="Heathcote_Valley">Heathcote Valley</option> 
+                <option value="Hoon_Hay">Hoon Hay</option> 
+                <option value="Hornby">Hornby</option>
+                <option value="Huntsbury">Huntsbury</option> 
+                <option value="Ilam">Ilam</option> 
+                <option value="Linwood">Linwood</option> 
+                <option value="Lyttelton">Lyttelton</option>
+                <option value="Mairehau">Mairehau</option> 
+                <option value="Merivale">Merivale</option> 
+                <option value="Mount_Pleasant">Mount Pleasant</option> 
+                <option value="Murray_Aynsley">Murray Aynsley</option>
+                <option value="New_Brighton">New Brighton</option> 
+                <option value="Opawa">Opawa</option> 
+                <option value="Papanui">Papanui</option> 
+                <option value="Parklands">Parklands</option>
+                <option value="Phillipstown">Phillipstown</option> 
+                <option value="Redcliffs">Redcliffs</option> 
+                <option value="Redwood">Redwood</option> 
+                <option value="Riccarton">Riccarton</option>
+                <option value="Richmond">Richmond</option> 
+                <option value="St_Albans">St Albans</option> 
+                <option value="St_Martins">St Martins</option>
+                <option value="Shirley">Shirley</option> 
+                <option value="Somerfield">Somerfield</option> 
+                <option value="Spencerville">Spencerville</option> 
+                <option value="Spreydon">Spreydon</option>
+                <option value="Strowan">Strowan</option> 
+                <option value="Sumner">Sumner</option> 
+                <option value="Sydenham">Sydenham</option> 
+                <option value="Upper_Riccarton">Upper Riccarton</option>
+                <option value="Waltham">Waltham</option> 
+                <option value="Westmorland">Westmorland</option> 
+                <option value="Wigram">Wigram</option> 
+                <option value="Woolston">Woolston</option>
+                </select></td>
+              </tr>-->
+              <tr valign="top">
+                <td id="txtComment">Comment</td>
+                <td></td>
+                <td><textarea id="comment" rows="3"></textarea></td>
+              </tr>
+              <tr valign="top">
+                <td colspan="2"></td>
+                <td><div id="panel" class="submitButtonPanel"></div></td>
+              </tr>
+            </table>    
+            <br /><br />
+            <a href="#" onclick="closeLayers('cloud','questionaire');">
+                <img src="/static/images/proceed.png" alt='proceed image' />
+            </a>
+        </center>
+    </div>
+    
+    <div id="cloud2"></div>
+    <!--the welcome layer -->
+    <div id="submitting">
+        <center>
+            Your data is transfered to the research database.<br />
+        </center>
+    </div>
+    
+    <!--the main website -->
+    
+    
+    <div id="top"><div id="headline">Fear of Crime in Wellington</div><div id="step1">Step 1</div><div id="step2">Step 2</div><div id="step3">Step 3</div><div id="step4">Step 4</div></div>
+    <div id="main">
+        <div id="mapElement"></div>
+        <div id="mapInfo">
+            <table width="95%" border="0" cellpadding="2" cellspacing="5" align="center">
+                <tr valign="top">
+    		        <td><strong>Mapping of fear of crime in Wellington</strong></td>
+    	        </tr>
+                <!--<tr valign="top">
+    		        <td>This website is for mapping the fear of crime among Wellington 
+                residents. By studying the characteristics of the 'fear' and their 
+                spatial distribution pattern, it will help reseachers to understand 
+                the factors causing crimes and address issues of safety and insecurity 
+                in local communities.<br /><br /></td>        
+    	        </tr>-->
+                <tr valign="top">
+                    <td><div id="instrucHead"><strong>Instructions to Step 1</strong></div></td>
+                </tr>
+                <tr valign="top">
+                    <td><div id="instrucBody"><strong>Click on the locations in Wellington where you think crime is high.<br /> Click on at least one place!</div>
+                    </td>
+                </tr>
+                <tr id="notWellington">
+                    <td>
+                        <select id="suburb">
+                            <option value="null">-Please select-</option> 
+                            <option value="CentralCant">Central Canterbury</option> 
+                            <option value="Canterbury">Canterbury</option> 
+                            <option value="SouthIsland">South Island</option> 
+                            <option value="NewZealand">New Zealand</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Oceania">Oceania</option>
+                            <option value="OutsideOcea">Outside Oceania</option>
+                        </select>
+                    </td>
+                
+                </tr>
+                <tr>
+                    <td><div id="proceedPanel" class="proceedButtonPanel"></div></td>
+                </tr>
+            </table>
+        </div>
+        <!--<div id="form" class="styled-form">
+            <div id="feedbackHead"></div>
+            <div id="feedbackBody"></div>
+        </div>-->
+    </div>
+    <div id="bottom">
+    <p>This survey is developed jointly by University of Canterbury and Victoria University Wellington. According to our ethics protocols, information gathered from participants will be used for research purposes only and not be disclosed to another party in any situation. All rights reserved, 2011.</p><br /></div>
+</body>
+</html>

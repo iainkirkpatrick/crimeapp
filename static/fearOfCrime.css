@@ -1,0 +1,437 @@
+body {
+    background-color:#FFFFFF;
+}
+
+div#cloud {
+    position:absolute; 
+    top:0; 
+    left:0; 
+    height:100%; 
+    width:100%; 
+    opacity: 0.7; 
+    background: white; 
+    z-index:1;
+}
+
+/* is used displaying a message in case a user does not have javascript enabled*/
+div#noJS {
+   position:absolute;
+   top: 200px; 
+   left: 200px;
+   width:801px;
+   height:200px;
+   background-color:#003D5C;
+   color:white;
+   font-family:"Arial";
+   font-size:20px;  
+   z-index:2; 
+}
+
+/* is used displaying the questionaire and the submit button*/
+div#questionaire {
+   position:absolute;
+   top: 100px; 
+   left: 100px;
+   width:750px;
+   height:500px;
+   background-color:#003D5C;
+   color:white;
+   font-family:"Arial";
+   font-size:20px;  
+   z-index:2;
+   display:none;
+}
+
+/* is used for displaying a welcome message - instead of the splash screen initially used*/
+div#welcome {
+   position:absolute;
+   top: 200px; 
+   left: 200px;
+   width:801px;
+   height:500px;
+   background-color:#003D5C;
+   color:white;
+   font-family:"Arial";
+   font-size:20px;  
+   z-index:1;
+   visibility:visible; 
+}
+
+div#cloud2 {
+    position:absolute; 
+    top:0; 
+    left:0; 
+    height:100%; 
+    width:100%; 
+    opacity: 0.7; 
+    background: white; 
+    z-index:3;
+    display:none;
+}
+
+div#submitting {
+   position:absolute;
+   top: 200px; 
+   left: 200px;
+   width:801px;
+   height:200px;
+   background-color:#003D5C;
+   color:white;
+   font-family:"Arial";
+   font-size:20px;  
+   z-index:3;
+   display:none; 
+}
+
+
+
+tr#notChristchurch {
+   display:none;
+}
+
+div#headline { 
+    position: relative; 
+	top: 5px;
+	left: 5px;
+	font-family:"Arial Black";
+	font-size:30px;
+    color:black;
+}
+
+/* was used for display of failed or successful data commit to the database*/
+div#message {
+   position:absolute;
+   top: 5px; 
+   left: 600px;
+   font-family:"Arial";
+   font-size:12px;   
+}
+   
+   
+/* was used to display the coordinates of the mouse's where abouts*/
+div#coordinates {
+   position:absolute;
+   top: 25px; 
+   left: 600px;
+   font-family:Arial;
+   font-size:12px;   
+}
+
+div#status {
+   position:absolute;
+   top: 25px; 
+   left: 500px;
+   font-family:Arial;
+   font-size:12px;   
+}
+
+/* top container*/
+div#top {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    width: 1201px;
+    height: 50px;
+}
+/*main container, which has mapelement, form and mapInfo inside of it*/
+div#main {
+    position: absolute;
+    top:58px;
+    left:5px;
+    width: 1201px;
+    height: 706px;
+}
+
+/*not sure whether to go with absolute or relative positioning - using relative for now and will have a look at how it works*/
+div#step1 {
+    position: absolute;
+    left:800px;
+    top:8px;
+    width: 96px;
+    height: 40px;
+    background-color: Yellow;
+    border:solid 2px White;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align:center;
+    font-weight:bold;
+    }
+
+div#step2 {
+    position: absolute;
+    left:900px;
+    top:8px;
+    width: 96px;
+    height: 40px;
+    background-color: Red;
+    border:solid 2px Gray;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align:center;
+    font-weight:lighter;
+    }
+
+div#step3
+{
+    position: absolute;
+    left:1000px;
+    top:8px;
+    width: 96px;
+    height: 40px;
+    background-color: Red;
+    border:solid 2px Gray;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align:center;
+    font-weight:lighter;
+    }
+    
+div#step4
+{
+    position: absolute;
+    left:1100px;
+    top:8px;
+    width: 96px;
+    height: 40px;
+    background-color: Red;
+    border:solid 2px Gray;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align:center;
+    font-weight:lighter;
+    }
+
+
+
+div#mapElement 
+{
+    position: relative;
+    left:1px;
+    top:2px;
+    width: 850px;
+    height: 700px;
+    border:solid 1px Gray;
+}
+
+div#toolbox
+{
+    position: absolute;
+    left:600px;
+    top:100px;
+    width:210px;
+    height:30px;
+    display:block;
+    z-index:1;
+    }
+
+div#toolbox2
+{
+    position: absolute;
+    left:600px;
+    top:100px;
+    width:210px;
+    height:30px;
+    display:none;
+    z-index:1;
+    }
+
+
+
+    
+div#form 
+{
+    position: relative;
+    top: -693px;
+    left: 860px;
+    width:340px;
+    height:456px;
+    border:solid 1px Gray;
+    -moz-border-top-left-radius: 15px;
+    border-top-left-radius: 15px;
+    -moz-border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    background-color:white;
+    opacity: 0.8;
+    }
+
+
+div#mapInfo 
+{
+    position: relative;
+    top:-701px;
+    left:860px;
+    width:340px;
+    height:700px;
+    border:solid 1px Gray;
+    -moz-border-top-left-radius: 15px;
+    border-top-left-radius: 15px;
+    -moz-border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    overflow-y: scroll; 
+    scrollbar-arrow-color: blue; 
+    scrollbar-face-color: #e7e7e7; 
+    scrollbar-3dlight-color: #a0a0a0; 
+    scrollbar-darkshadow-color: #888888;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    background-color:white;
+    opacity: 0.8;
+    }
+    
+    
+/* is used in the success webpage instead of form and mapInfo*/
+div#mapSuccess 
+{
+    position: relative;
+    top:-651px;
+    left:660px;
+    width:340px;
+    height:652px;
+    border:solid 1px gray;
+    -moz-border-top-left-radius: 15px;
+    border-top-left-radius: 15px;
+    -moz-border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    background-color:white;
+    opacity: 0.6;
+}    
+
+/*the bottom container*/    
+div#bottom 
+{
+    position:absolute;
+    top:776px;
+    left:10px;
+    width: 1200px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    color: black;
+}
+    
+/*****************************************************************************************/
+/*Submit Button and the panel it has to be inside according to the OpenLayers DOM*/
+.submitButtonPanel {
+    float: left;
+    width:  100px;
+    height: 28px;
+    }
+
+/* defining the space for each button within the panel*/
+.submitButtonPanel div {
+    float: left;
+    width:  100px;
+    height: 28px;
+    }
+
+/* styling of the submit button */
+div.buttonSubmitItemActive { 
+    background-image: url(images/submit.png);
+    background-repeat: no-repeat;
+    }
+
+
+/*Submit Button and the panel it has to be inside according to the OpenLayers DOM*/
+.proceedButtonPanel {
+    float: left;
+    width:  77px;
+    height: 21px;
+    }
+
+/* defining the space for each button within the panel*/
+.proceedButtonPanel div {
+    float: left;
+    width:  77px;
+    height: 21px;
+    }
+
+/* styling of the submit button */
+div.buttonProceedItemActive { 
+    background-image: url(images/proceed.png);
+    background-repeat: no-repeat;
+    }
+
+
+
+
+/* Custom editing toolbar - the panel styling*/
+.customEditingToolbar {
+    float: right;
+    right: 0px;
+    height: 35px;
+    width: 200px;
+    }
+
+/* defining the space for each button within the panel*/    
+.customEditingToolbar div {
+    float: right;
+    margin: 5px;
+    width: 90px;
+    height: 25px;
+    }
+    
+      
+    
+/*customised versions of styles that is in the openLayers style sheet - styles.css*/    
+.olControlNavigationItemActive {
+    background-image:
+    url(images/moveOn.png);
+    background-repeat: no-repeat;
+  /*  background-position: -103px -23px; */
+    }
+.olControlNavigationItemInactive {
+    background-image:
+    url(images/moveOff.png);
+    background-repeat: no-repeat;
+/*    background-position: -103px -0px;  */
+    }
+.olControlDrawFeaturePolygonItemInactive {
+    background-image:
+    url(images/addOff.png);
+    background-repeat: no-repeat;
+/*    background-position: -26px 0px;  */
+    }
+.olControlDrawFeaturePolygonItemActive {
+    background-image:
+    url(images/addOn.png);
+    background-repeat: no-repeat;
+/*    background-position: -26px -23px;  */                                                          
+    }
+.olControlModifyFeatureItemActive {
+    background-image:
+    url(images/moveOn.png);
+    background-repeat: no-repeat;
+/*    background-position: 0px 1px;  */
+    }
+.olControlModifyFeatureItemInactive {
+    background-image:
+    url(images/moveOff.png);
+    background-repeat: no-repeat;
+/*    background-position: 0px 1px;  */
+    }
+.olControlDeleteFeatureItemActive {
+    background-image:
+    url(images/deleteOn.png);
+    background-repeat: no-repeat;
+/*    background-position: 0px 1px;  */
+    }
+.olControlDeleteFeatureItemInactive {
+    background-image:
+    url(images/deleteOff.png);
+    background-repeat: no-repeat;
+/*    background-position: 0px 1px;  */
+    }
+
+/*	select style */
+.styled-form select {
+   width: 150px;
+   border: 1px solid #cccccc;
+}
+
+.styled-form textarea {
+	resize: none;
+    max-width: 140px;
+}

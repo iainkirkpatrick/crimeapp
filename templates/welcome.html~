@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fear of Crime in Wellington</title>
+	<link rel="shortcut icon" href="/static/images/favicon.ico" >
+	
+	<link rel="stylesheet" type="text/css" href="/static/fearOfCrime.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/static/javascript/theme/default/style.css" media="screen" />
+</head>
+
+<body>
+	<div id="welcome">
+        <center>
+            Welcome to the Fear of Crime Website<br /><br />
+            This web site makes it possible for you to record the locations where you fear crime in Wellington. <br /> 
+            It is a 4 step shop<br />
+            1. step: Click the locations on the map where you think crime is high (click a least once). Click on proceed to proceed.<br />
+            2. step: Click the locations on the map where you feel unsafe walking at night (click a least once). Click on proceed to proceed.<br />
+            3. step: Click on the area where you live. If you don't live in Wellington use the provided drop down box. Click on proceed to proceed.<br />
+            4. step: Fill in the questionaire and click the submit button, when you're finished.<br />
+            Afterwards you'll be provided with an overview of all the data our users have provided at this stage.<br />
+            This will be very valuable information to our research and hopefully it can help to make Wellington a more safe place to live. <br /> 
+            Thank you very much for your participation.<br /><br />
+            <a href="index.html"</a>
+                <img src="/static/images/proceed.png" alt='proceed image' />
+            </a>
+        </center>
+    </div>
+</body>
+</html>

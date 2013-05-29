@@ -1,0 +1,153 @@
+$def with (q1, q2, q3)
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>LEAFLET TEST Fear of Crime in Wellington</title>
+
+	<!-- Leaflet core js -->
+	<script type="text/javascript"
+		src="static/javascript/leafletjs_dist/leaflet.js">
+	</script>
+
+	<!-- JQuery core js -->
+	<script type="text/javascript"
+		src="static/javascript/jquery-1.9.1.min.js">
+	</script>
+
+	<!-- the css style sheets
+	<link rel="stylesheet" type="text/css" href="static/fearOfCrime.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="static/javascript/theme/default/style.css" media="screen" />-->
+	<link rel="stylesheet" type="text/css" href="static/javascript/leafletjs_dist/leaflet.css" media="screen" />
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="static/javascript/leafletjs_dist/leaflet.ie.css" />
+	<![endif]-->
+
+	<style>
+		#maptitle, #maingroup, #disclaimer { margin-left: auto; margin-right: auto; width: 90%; height: 50px; }
+		#maingroup { height: 700px; }
+		#map { height: 700px; width: 700px; float: left; }
+		#steps { height: 700px; width: 400px; float: left; }
+		#disclaimer { clear: both; }
+		
+		h2 { text-align: center; }
+	</style>
+</head>
+
+<body>
+	<div id="maptitle">
+		<h2>DEMO Fear of Crime in Wellington</h2>
+	</div>
+	<div id="maingroup">
+		<div id="map"></div>
+		<div id="steps">
+			<p id="steptext">$q1</p>
+			<button type="button" onclick="proceed()">(dummy)Proceed</button>
+		</div>
+	</div>
+	<div id="disclaimer"></div>
+
+	<script>
+		//declaration of app functions
+		function proceed() {
+			if (step == 1) {
+				//check if step1markers has any content - if not, throw a pop-up error and break out of this function
+				if (step1markers.length < 1) {
+					alert("Please click on at least one location where you think crime is high in Wellington!");
+				} else {
+					jQuery("#steptext").text('$q2');
+					step++;
+				}
+			} else if (step == 2) {
+				//check if step2markers has any content - if not, throw a pop-up error and break out of this function
+				if (step2markers.length < 1) {
+					alert("Please click on at least one location where you feel unsafe walking at night in Wellington!");
+				} else {
+					jQuery("#steptext").text('$q3');
+					step++;
+				}
+			} else if (step == 3) {
+				//jQuery("DOM element").text(web.py variable for step 4 text);
+				step++;
+			} else if (step == 4) {
+				//jQuery("DOM element").text(web.py variable for processing/final text);
+				step++;
+			}
+		};
+		
+		//basic setup of map and baselayer on #map div.
+		var map = L.map('map').setView([51.505, -0.09], 13);
+		var baselayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		//on map click, a marker is added to the step1markers array while also being added to the map. Each marker can be accessed via it's index position in the array, and the latlng's can be accessed via step1markers[i].getLatLng().lat/lng
+		function onMapClick(e) {
+			var ll = e.latlng;
+			if (step == 1) {
+				step1markers.push(L.marker(ll, {icon: s1icon}).addTo(map));
+			} else if (step == 2) {
+				step2markers.push(L.marker(ll, {icon: s2icon}).addTo(map));
+			//else if (step == 3) { could do which CAU e.latlng is within, but that likely involves complex spatial checks. Probably better to ignore e.latlng and instead use mouseover/click stuff on a new polygon layer, somewhat similar to choropleth map for Kuda demo.
+		}};
+
+
+
+
+		//declaration of globals
+
+		//Ideally perhaps the appdata is a GEOJSON rather than JSON - easier to retrieve and parse the geographic points from a database if so? Would need to think about the exact format/structure, given there are 2 sets of points which are seperate to one another.
+		//Might be best if appdata is a JSON object, steps 1 and 2 are GEOJSON objects themselves (really just collections of points), step 3 is a simple string for name of suburb (or this could be a GEOJSON if it would be useful to store the polygon coordinates? consider later?), and step 4 is a collection of string answers.
+		//Decisions regarding the storage really depend on how Mairead is thinking she will access the data, what analysis she wants to make on it... Start basic for now, can always improve and make more complex.
+
+		//for clarity, defining the structure of the main JSON-formatted object (the object that is passed to the database upon completion)
+		var appdata = {
+			'date': new Date(),
+			's1': [],
+			's2': [],
+			's3': '',
+			's4': {
+				'q1': '',
+				'q2': '',
+				'q3': '',
+				'q4': '',
+				'q5': '',
+				'q6': '',
+				'q7': ''
+			}
+		};
+		var step1markers = [];
+		var step2markers = [];
+		var step = 1;
+		//check out the defining the icon class at bottom of custom icons tut, would clean up code here
+		var s1icon = L.icon({
+			iconUrl: 'static/images/theftdark.png',
+			iconSize:     [32, 37], // size of the icon
+			iconAnchor:   [16, 2], // point of the icon which will correspond to marker's location
+		});
+		var s2icon = L.icon({
+			iconUrl: 'static/images/crimescenered.png',
+			iconSize:     [32, 37], // size of the icon
+			iconAnchor:   [16, 2], // point of the icon which will correspond to marker's location
+		});
+
+
+		
+		// app logic
+		
+		map.on('click', onMapClick);
+
+		
+
+
+		//NOTES:
+		//each marker that is added via a map click, add that marker to an array of markers. then, have a button titled "remove last marker" which iteratively removes the last marker of the array via it's index.
+		//when proceeding to step 2, add that array of markers (var = step1Makers ?) to the global JSON object i am using for the app data.
+		//unsure as of yet how to tackle the CAU layer (some kind of seperate L.layer with visibility = 0 except on mouseover etc)
+
+	</script>
+
+</body>
+
+</html>
