@@ -56,6 +56,9 @@ $def with (q1, q2, q3)
 				if (step1markers.length < 1) {
 					alert("Please click on at least one location where you think crime is high in Wellington!");
 				} else {
+					//add the marker latlon's to the main appdata JSON
+					//advance the text prompt, and the step variable for this function
+					appdata.s1 = step1markers;
 					jQuery("#steptext").text('$q2');
 					step++;
 				}
@@ -84,11 +87,14 @@ $def with (q1, q2, q3)
 
 		//on map click, a marker is added to the step1markers array while also being added to the map. Each marker can be accessed via it's index position in the array, and the latlng's can be accessed via step1markers[i].getLatLng().lat/lng
 		function onMapClick(e) {
-			var ll = e.latlng;
+			ll = e.latlng;
 			if (step == 1) {
-				step1markers.push(L.marker(ll, {icon: s1icon}).addTo(map));
+				//step1markers.push(L.marker(ll, {icon: s1icon}).addTo(map));
+				L.marker(ll, {icon: s1icon}).addTo(map);
+				step1markers.push([ll.lat, ll.lng]);
 			} else if (step == 2) {
-				step2markers.push(L.marker(ll, {icon: s2icon}).addTo(map));
+				L.marker(ll, {icon: s2icon}).addTo(map);
+				step2markers.push([ll.lat, ll.lng]);
 			//else if (step == 3) { could do which CAU e.latlng is within, but that likely involves complex spatial checks. Probably better to ignore e.latlng and instead use mouseover/click stuff on a new polygon layer, somewhat similar to choropleth map for Kuda demo.
 		}};
 
@@ -100,8 +106,9 @@ $def with (q1, q2, q3)
 		//Ideally perhaps the appdata is a GEOJSON rather than JSON - easier to retrieve and parse the geographic points from a database if so? Would need to think about the exact format/structure, given there are 2 sets of points which are seperate to one another.
 		//Might be best if appdata is a JSON object, steps 1 and 2 are GEOJSON objects themselves (really just collections of points), step 3 is a simple string for name of suburb (or this could be a GEOJSON if it would be useful to store the polygon coordinates? consider later?), and step 4 is a collection of string answers.
 		//Decisions regarding the storage really depend on how Mairead is thinking she will access the data, what analysis she wants to make on it... Start basic for now, can always improve and make more complex.
+		//UPDATE: Think I will just have a JSON structure for the data client-side, and then once the app logic is completed, (async) parse the JSON and store the data in postgres table (multiple columns, single row per participant)
 
-		//for clarity, defining the structure of the main JSON-formatted object (the object that is passed to the database upon completion)
+		//for clarity, defining the structure of the main JSON-formatted object (the object that is parsed to the database upon completion)
 		var appdata = {
 			'date': new Date(),
 			's1': [],
@@ -131,13 +138,16 @@ $def with (q1, q2, q3)
 			iconSize:     [32, 37], // size of the icon
 			iconAnchor:   [16, 2], // point of the icon which will correspond to marker's location
 		});
+		
+		//globals for debugging
+		var ll;
 
 
 		
 		// app logic
 		
 		map.on('click', onMapClick);
-
+		//q3layer.on('click', onLayerClick);
 		
 
 
