@@ -1,4 +1,4 @@
-$def with (q1, q2, q3)
+$def with (q1, q2, q3, q4)
 
 <!DOCTYPE html>
 <html>
@@ -15,6 +15,11 @@ $def with (q1, q2, q3)
 	<script type="text/javascript"
 		src="static/javascript/jquery-1.9.1.min.js">
 	</script>
+	
+	<!-- JQueryUI core js -->
+	<script type="text/javascript"
+		src="static/javascript/jquery-ui.js">
+	</script>
 
 	<!-- the css style sheets
 	<link rel="stylesheet" type="text/css" href="static/fearOfCrime.css" media="screen" />
@@ -26,9 +31,9 @@ $def with (q1, q2, q3)
 
 	<style>
 		#maptitle, #maingroup, #disclaimer { margin-left: auto; margin-right: auto; width: 90%; height: 50px; }
-		#maingroup { height: 700px; }
-		#map { height: 700px; width: 700px; float: left; }
-		#steps { height: 700px; width: 400px; float: left; }
+		#maingroup { height: 700px; width: 95%; }
+		#map { height: 700px; }
+		#steps { height: 500px; width: 200px; position: relative; float: right; }
 		#disclaimer { clear: both; }
 		
 		h2 { text-align: center; }
@@ -43,7 +48,24 @@ $def with (q1, q2, q3)
 		<div id="map"></div>
 		<div id="steps">
 			<p id="steptext">$q1</p>
-			<button type="button" onclick="proceed()">(dummy)Proceed</button>
+			<button type="button" onclick="proceed()">Proceed</button>
+			<button type="button" onclick="rmvMarker()">Remove last marker</button>
+			<form id="questionaire">
+				<p id="q4q1">Gender:</p>
+				<input type="text" name="gender"><br>
+				<p id="q4q2">Q2:</p> 
+				<input type="text" name="q2">
+				<p id="q4q3">Q3:</p> 
+				<input type="text" name="q3">
+				<p id="q4q4">Q4:</p> 
+				<input type="text" name="q4">
+				<p id="q4q5">Q5:</p> 
+				<input type="text" name="q5">
+			</form>
+			<!--<form name="main" method="post"> 
+				if not questionaire.valid: <p class="error">Try again, AmeriCAN:</p>
+				:questionaire.render()
+			</form>-->
 		</div>
 	</div>
 	<div id="disclaimer"></div>
@@ -56,11 +78,13 @@ $def with (q1, q2, q3)
 				if (step1markers.length < 1) {
 					alert("Please click on at least one location where you think crime is high in Wellington!");
 				} else {
-					//add the marker latlon's to the main appdata JSON
 					//advance the text prompt, and the step variable for this function
-					appdata.s1 = step1markers;
 					jQuery("#steptext").text('$q2');
 					step++;
+					//remove the step1markers from the map
+					for(i=0;i<step1markers.length;i++) {
+					    map.removeLayer(step1markers[i]);
+					};
 				}
 			} else if (step == 2) {
 				//check if step2markers has any content - if not, throw a pop-up error and break out of this function
@@ -69,37 +93,64 @@ $def with (q1, q2, q3)
 				} else {
 					jQuery("#steptext").text('$q3');
 					step++;
+					//remove the step2markers from the map
+					for(i=0;i<step2markers.length;i++) {
+					    map.removeLayer(step2markers[i]);
+					};
+					//set visible the CAU polygon layer in prep for q3
+					//and remove the button 'rmvMarker', as no longer needed
+					
+					//from KUDADEMO
+					//var overlay = L.geoJson(admin1, {style: style, onEachFeature: onEachFeature} ).addTo(map);
 				}
 			} else if (step == 3) {
-				//jQuery("DOM element").text(web.py variable for step 4 text);
-				step++;
+				//check if cauSelection is empty - if so, throw a pop-up error and break out of this function
+				if (cauSelection == '') {
+					//alert('Please select which area you live in, either by clicking the map or selecting an option from the drop-down menu!');
+					alert('DEV: cauSelection is now assigned "default", as CAU map layer is not active');
+					cauSelection = 'default';
+				} else {
+					appdata.s3 = cauSelection;
+					jQuery("#steptext").text('$q4');
+					step++;
+					
+					//add/make visible the questionaire text for q4
+				}
 			} else if (step == 4) {
 				//jQuery("DOM element").text(web.py variable for processing/final text);
 				step++;
 			}
 		};
 		
-		//basic setup of map and baselayer on #map div.
-		var map = L.map('map').setView([51.505, -0.09], 13);
-		var baselayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
+		function rmvMarker() {
+			//remove the last marker added from both the map and from the appropriate marker array
+			if (step == 1) {
+				map.removeLayer(step1markers.pop());
+				appdata.s1.pop();
+			} else if (step == 2) {
+				map.removeLayer(step2markers.pop());
+				appdata.s2.pop();
+			}
+		};
+		
 		//on map click, a marker is added to the step1markers array while also being added to the map. Each marker can be accessed via it's index position in the array, and the latlng's can be accessed via step1markers[i].getLatLng().lat/lng
 		function onMapClick(e) {
 			ll = e.latlng;
 			if (step == 1) {
-				//step1markers.push(L.marker(ll, {icon: s1icon}).addTo(map));
-				L.marker(ll, {icon: s1icon}).addTo(map);
-				step1markers.push([ll.lat, ll.lng]);
+				step1markers.push(L.marker(ll, {icon: s1icon}).addTo(map));
+				//L.marker(ll, {icon: s1icon}).addTo(map);
+				appdata.s1.push([ll.lat, ll.lng]);
 			} else if (step == 2) {
-				L.marker(ll, {icon: s2icon}).addTo(map);
-				step2markers.push([ll.lat, ll.lng]);
+				step2markers.push(L.marker(ll, {icon: s2icon}).addTo(map));
+				//L.marker(ll, {icon: s2icon}).addTo(map);
+				appdata.s2.push([ll.lat, ll.lng]);
 			//else if (step == 3) { could do which CAU e.latlng is within, but that likely involves complex spatial checks. Probably better to ignore e.latlng and instead use mouseover/click stuff on a new polygon layer, somewhat similar to choropleth map for Kuda demo.
 		}};
 
-
-
+		//jqueryui function/s
+		function runEffect() {
+			jquery( "#steps" ).toggle( slide, 500 );
+		}
 
 		//declaration of globals
 
@@ -109,8 +160,10 @@ $def with (q1, q2, q3)
 		//UPDATE: Think I will just have a JSON structure for the data client-side, and then once the app logic is completed, (async) parse the JSON and store the data in postgres table (multiple columns, single row per participant)
 
 		//for clarity, defining the structure of the main JSON-formatted object (the object that is parsed to the database upon completion)
+		//as well as the other vars used
+		//(most can probably be locals instead for prod)
 		var appdata = {
-			'date': new Date(),
+			'date': new Date(), //fix this, shouldn't be ticks
 			's1': [],
 			's2': [],
 			's3': '',
@@ -126,6 +179,7 @@ $def with (q1, q2, q3)
 		};
 		var step1markers = [];
 		var step2markers = [];
+		var cauSelection = '';
 		var step = 1;
 		//check out the defining the icon class at bottom of custom icons tut, would clean up code here
 		var s1icon = L.icon({
@@ -141,11 +195,16 @@ $def with (q1, q2, q3)
 		
 		//globals for debugging
 		var ll;
-
-
 		
 		// app logic
+		//basic setup of map and baselayer on #map div.
+		var map = L.map('map').setView([51.505, -0.09], 13);
+		var baselayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
 		
+		//jquery('#questionaire.q4q1').text(q4questions[0]);
+
 		map.on('click', onMapClick);
 		//q3layer.on('click', onLayerClick);
 		
