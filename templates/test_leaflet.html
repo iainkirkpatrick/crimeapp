@@ -30,11 +30,14 @@ $def with (q1, q2, q3, q4)
 	<![endif]-->
 
 	<style>
-		#maptitle, #maingroup, #disclaimer { margin-left: auto; margin-right: auto; width: 90%; height: 50px; }
-		#maingroup { height: 700px; width: 95%; }
-		#map { height: 700px; }
-		#steps { height: 500px; width: 200px; position: relative; float: right; }
-		#disclaimer { clear: both; }
+		html, body { height: 90%; }
+		
+		#maptitle, #maingroup, #disclaimer { height: 50px; }
+		#maingroup { height: 100%; position: relative; }
+		#map { height: 100%; }
+		#steps { height: 150px; width: 250px; position: absolute; right: 0px; top: 0px; background-image:url('static/images/cream_pixels.png'); opacity:0.8; filter:alpha(opacity=80); }
+		#questionaire { display: none; height: 400px; width: 250px; position: absolute; right: 0px; top: 100px; background-image:url('static/images/cream_pixels.png'); opacity:0.8; filter:alpha(opacity=80); }
+		#disclaimer { clear: both; text-align:center; font-size: 12px; }
 		
 		h2 { text-align: center; }
 	</style>
@@ -50,7 +53,9 @@ $def with (q1, q2, q3, q4)
 			<p id="steptext">$q1</p>
 			<button type="button" onclick="proceed()">Proceed</button>
 			<button type="button" onclick="rmvMarker()">Remove last marker</button>
-			<form id="questionaire">
+		</div>
+		<div id="questionaire"> <!-- this should be made visible by setting 'display: inline;' when needed by q4 -->
+			<form>
 				<p id="q4q1">Gender:</p>
 				<input type="text" name="gender"><br>
 				<p id="q4q2">Q2:</p> 
@@ -68,7 +73,9 @@ $def with (q1, q2, q3, q4)
 			</form>-->
 		</div>
 	</div>
-	<div id="disclaimer"></div>
+	<div id="disclaimer">
+		<p>Victoria University: bla bla bla disclaimer stuff.</p>
+	</div>
 
 	<script>
 		//declaration of app functions
