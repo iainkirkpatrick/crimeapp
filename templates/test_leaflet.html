@@ -10,6 +10,11 @@ $def with (q1, q2, q3, q4)
 	<script type="text/javascript"
 		src="static/javascript/leafletjs_dist/leaflet.js">
 	</script>
+	
+	
+  	<script type="text/javascript"
+  	    src="http://api.tiles.mapbox.com/mapbox.js/v1.0.3/mapbox.js">
+  	</script>
 
 	<!-- JQuery core js -->
 	<script type="text/javascript"
@@ -28,6 +33,11 @@ $def with (q1, q2, q3, q4)
 	<!--[if lte IE 8]>
 		<link rel="stylesheet" href="static/javascript/leafletjs_dist/leaflet.ie.css" />
 	<![endif]-->
+	
+	<link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.3/mapbox.css' rel='stylesheet' />
+  	<!--[if lte IE 8]>
+    	<link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.3/mapbox.ie.css' rel='stylesheet' />
+  	<![endif]-->
 
 	<style>
 		html, body { height: 90%; }
@@ -205,11 +215,16 @@ $def with (q1, q2, q3, q4)
 		
 		// app logic
 		//basic setup of map and baselayer on #map div.
-		var map = L.map('map').setView([51.505, -0.09], 13);
+		/*
+		var map = L.map('map').setView([-41.291222,174.77452], 13);
 		var baselayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
+		*/
 		
+		//mapbox plugin, mapbox layer
+		var map = L.mapbox.map('map', 'envintage.map-ny9ut6bc')
+      		.setView([-41.291222,174.77452], 12);
 		//jquery('#questionaire.q4q1').text(q4questions[0]);
 
 		map.on('click', onMapClick);

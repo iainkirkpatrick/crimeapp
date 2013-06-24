@@ -2,7 +2,7 @@ import web
 from web import form
 
 #define variables containing text for questions - CHANGE THESE if the questions change
-q1 = "STEP 1: Click on the locations in Christchurch where you think crime is high. Click on at least one place!"
+q1 = "STEP 1: Click on the locations in Wellington where you think crime is high. Click on at least one place!"
 q2 = "STEP 2: Mark the locations where you feel unsafe walking at night by clicking on the map to the left. Click on at least one location!"
 q3 = "STEP 3: Mark the area in which you live by clicking on the map to the left. If you don't live in Wellington please use the dropdown box below to identify where you come from"
 q4 = "STEP 4: Answer the questions below:"
