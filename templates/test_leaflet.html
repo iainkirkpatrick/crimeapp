@@ -6,12 +6,17 @@ $def with (q1, q2, q3, q4)
 <head>
 	<title>LEAFLET TEST Fear of Crime in Wellington</title>
 
+	<!-- CAU GEOJSON data -->
+	<script type="text/javascript" 
+		src="static/javascript/wgtn_cau_WGS84.js">
+	</script>
+
 	<!-- Leaflet core js -->
 	<script type="text/javascript"
 		src="static/javascript/leafletjs_dist/leaflet.js">
 	</script>
 	
-	
+	<!-- MapBox core js -->
   	<script type="text/javascript"
   	    src="http://api.tiles.mapbox.com/mapbox.js/v1.0.3/mapbox.js">
   	</script>
@@ -226,6 +231,9 @@ $def with (q1, q2, q3, q4)
 		var map = L.mapbox.map('map', 'envintage.map-ny9ut6bc')
       		.setView([-41.291222,174.77452], 12);
 		//jquery('#questionaire.q4q1').text(q4questions[0]);
+		
+		//add the CAU GEOJSON to map
+		L.geoJson(wgtn_caus).addTo(map);
 
 		map.on('click', onMapClick);
 		//q3layer.on('click', onLayerClick);
