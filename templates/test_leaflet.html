@@ -67,7 +67,7 @@ $def with (q1, q2, q3, q4)
 		<div id="steps">
 			<p id="steptext">$q1</p>
 			<button type="button" onclick="proceed()">Proceed</button>
-			<button type="button" onclick="rmvMarker()">Remove last marker</button>
+			<button id="rmv" type="button" onclick="rmvMarker()">Remove last marker</button>
 		</div>
 		<div id="questionaire"> <!-- this should be made visible by setting 'display: inline;' when needed by q4 -->
 			<form>
@@ -122,21 +122,26 @@ $def with (q1, q2, q3, q4)
 					//set visible the CAU polygon layer in prep for q3
 					//and remove the button 'rmvMarker', as no longer needed
 					
+					//remove button
+					jQuery("#rmv").remove();
+					
+					//add the CAU GEOJSON to map
 					//from KUDADEMO
-					//var overlay = L.geoJson(admin1, {style: style, onEachFeature: onEachFeature} ).addTo(map);
+					cauLayer = L.geoJson(wgtn_caus, {style: style, onEachFeature: onEachFeature} ).addTo(map);
 				}
 			} else if (step == 3) {
 				//check if cauSelection is empty - if so, throw a pop-up error and break out of this function
 				if (cauSelection == '') {
-					//alert('Please select which area you live in, either by clicking the map or selecting an option from the drop-down menu!');
-					alert('DEV: cauSelection is now assigned "default", as CAU map layer is not active');
-					cauSelection = 'default';
+					alert('Please select which area you live in, either by clicking the map or selecting an option from the drop-down menu!');
+					//alert('DEV: cauSelection is now assigned "default", as CAU map layer is not active');
+					//cauSelection = 'default';
 				} else {
 					appdata.s3 = cauSelection;
 					jQuery("#steptext").text('$q4');
 					step++;
 					
 					//add/make visible the questionaire text for q4
+					
 				}
 			} else if (step == 4) {
 				//jQuery("DOM element").text(web.py variable for processing/final text);
@@ -173,6 +178,71 @@ $def with (q1, q2, q3, q4)
 		function runEffect() {
 			jquery( "#steps" ).toggle( slide, 500 );
 		}
+		
+		//styling function for CAU layer
+		function style(feature) {
+			
+			//something like 'if feature.properties.NAME == cauSelection then pass'
+			//console.log(feature.properties.NAME);
+			if (feature.properties.NAME == cauSelection) {
+				//no 'pass' required in JS
+			} else {
+				return {
+			        weight: 1,
+			        opacity: 1,
+			        color: 'grey',
+			        dashArray: '3',
+			        fillOpacity: 0.1
+			    };
+			};
+		}
+		
+		//changing the CAU styles on mouseover/mouseout
+		function highlightFeature(e) {
+		    var layer = e.target;
+		
+		    layer.setStyle({
+		        weight: 3,
+		        color: 'red',
+		        dashArray: '',
+		        fillOpacity: 0.25
+		    });
+		
+		    if (!L.Browser.ie && !L.Browser.opera) {
+		        layer.bringToFront();
+		    }
+		}
+
+		function resetHighlight(e) {
+    		cauLayer.resetStyle(e.target);
+		}
+		
+		function selectFeature(e) {
+			var layer = e.target;
+			
+			cauSelection = layer.feature.properties.NAME;
+			//cauLayer.resetStyle(e.target);
+			cauLayer.setStyle(style);
+			
+		    layer.setStyle({
+		        weight: 3,
+		        color: 'blue',
+		        dashArray: '',
+		        fillOpacity: 0.25
+		    });
+		
+		    if (!L.Browser.ie && !L.Browser.opera) {
+		        layer.bringToFront();
+		    }
+		}
+		
+		function onEachFeature(feature, layer) {
+	    layer.on({
+	    	click: selectFeature,
+	        mouseover: highlightFeature,
+	        mouseout: resetHighlight
+	    });
+		}
 
 		//declaration of globals
 
@@ -199,8 +269,20 @@ $def with (q1, q2, q3, q4)
 				'q7': ''
 			}
 		};
+		var s4text = {
+			'q1': "Gender:",
+			'q2': "Age group:",
+			'q3': "Occupation:",
+			'q4': "Income:",
+			'q5': "Education:",
+			'q6': "Ethnicity:",
+			'q7': "Have you been a victim of crime:",
+			'q8': "Are you worried about crime in Wellington:",
+			'q9': "Comments:"
+		};
 		var step1markers = [];
 		var step2markers = [];
+		var cauLayer;
 		var cauSelection = '';
 		var step = 1;
 		//check out the defining the icon class at bottom of custom icons tut, would clean up code here
@@ -228,12 +310,11 @@ $def with (q1, q2, q3, q4)
 		*/
 		
 		//mapbox plugin, mapbox layer
-		var map = L.mapbox.map('map', 'envintage.map-ny9ut6bc')
+		var map = L.mapbox.map('map', 'envintage.map-ny9ut6bc', {
+				worldCopyJump: true 
+				})
       		.setView([-41.291222,174.77452], 12);
 		//jquery('#questionaire.q4q1').text(q4questions[0]);
-		
-		//add the CAU GEOJSON to map
-		L.geoJson(wgtn_caus).addTo(map);
 
 		map.on('click', onMapClick);
 		//q3layer.on('click', onLayerClick);

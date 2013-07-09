@@ -7,6 +7,17 @@ q2 = "STEP 2: Mark the locations where you feel unsafe walking at night by click
 q3 = "STEP 3: Mark the area in which you live by clicking on the map to the left. If you don't live in Wellington please use the dropdown box below to identify where you come from"
 q4 = "STEP 4: Answer the questions below:"
 
+# questionaire variables if doing them by simple string style
+q4a = "Gender:"
+q4b = "Age group:"
+q4c = "Occupation:"
+q4d = "Income:"
+q4e = "Education:"
+q4f = "Ethnicity:"
+q4g = "Have you been a victim of crime:"
+q4h = "Are you worried about crime in Wellington:"
+q4i = "Comments:"
+
 #text for q4 (questionaire). JSON?
 ## q4questions = ['Name:', 'Gender:']
 
